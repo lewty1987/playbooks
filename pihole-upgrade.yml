@@ -1,0 +1,8 @@
+---
+- hosts: pihole
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Upgrade PiHole...
+      shell: pihole -up
