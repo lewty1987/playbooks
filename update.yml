@@ -1,7 +1,5 @@
 ---
 - hosts: ubuntu
-  become: true
-  become_user: root
 
   tasks:
     - name: Update apt-get repo and cache
