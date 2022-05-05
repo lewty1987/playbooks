@@ -1,5 +1,8 @@
 ---
 - hosts: ubuntu
+  ansible_become: yes 
+  ansible_become_method: sudo
+  ansible_become_pass: "{{ vault_ansible_password }}"
 
   tasks:
     - name: Update apt-get repo and cache
