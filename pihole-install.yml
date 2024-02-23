@@ -6,4 +6,4 @@
 
   tasks:
     - name: Installing Pi-Hole
-      shell: sudo curl -sSL https://install.pi-hole.net | sudo bash
+      shell: sudo curl -sSL https://install.pi-hole.net | sudo bash /dev/stdin --unattended
