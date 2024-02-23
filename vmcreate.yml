@@ -1,1 +1,12 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
 
+  tasks:
+    - name: Clone the VM...
+      shell: qm clone 9000 999 --name VM-Clone-Cloud-Init
+
+    - name: Set IP Address...
+      shell: qm set 999 --ipconfig0 ip=192.168.45.35/24,gw=192.168.45.1
