@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Installing Pi-Hole
+      shell: curl -sSL https://install.pi-hole.net | bash
