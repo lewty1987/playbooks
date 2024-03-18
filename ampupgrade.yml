@@ -3,3 +3,5 @@
   become: yes
   become_user: amp
   become_method: sudo
+
+  tasks:
