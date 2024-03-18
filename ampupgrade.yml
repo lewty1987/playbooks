@@ -5,3 +5,5 @@
   become_method: sudo
 
   tasks:
+  - name: Upgrade amp instance...
+    command: ampinstmgr upgradeall
