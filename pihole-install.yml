@@ -1,9 +1,32 @@
 ---
-- hosts: all
-  become: true
-  become_user: root
-  become_method: sudo
+- name: Install Pi-hole
+  hosts: pihole
+  become: yes
 
   tasks:
-    - name: Installing Pi-Hole
-      shell: sudo su && curl -sSL https://install.pi-hole.net | bash
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install dependencies
+      apt:
+        name: 
+          - curl
+          - sudo
+          - apt-transport-https
+        state: present
+
+    - name: Download Pi-hole installer script
+      get_url:
+        url: https://install.pi-hole.net
+        dest: /tmp/install_pihole.sh
+        mode: '0755'
+
+    - name: Run Pi-hole installer
+      command: /tmp/install_pihole.sh --unattended
+
+    - name: Ensure Pi-hole is running
+      service:
+        name: pihole-FTL
+        state: started
+        enabled: yes
