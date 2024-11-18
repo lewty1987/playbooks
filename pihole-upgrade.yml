@@ -1,8 +1,21 @@
 ---
-- hosts: all
-  become: true
-  become_user: root
+- name: Upgrade Pi-hole
+  hosts: pihole
+  become: yes
 
   tasks:
-    - name: Upgrade PiHole...
-      shell: pihole -up
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+
+    - name: Upgrade Pi-hole
+      command: pihole -up
+      register: upgrade_output
+
+    - name: Display upgrade output
+      debug:
+        var: upgrade_output.stdout
