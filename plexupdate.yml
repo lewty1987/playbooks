@@ -1,0 +1,19 @@
+---
+- name: Update Plex Media Server
+  hosts: plex
+  become: yes
+  tasks:
+    - name: Download the latest Plex Media Server .deb package
+      get_url:
+        url: "https://downloads.plex.tv/plex-media-server-new/latest.deb"
+        dest: "/tmp/plexmediaserver.deb"
+
+    - name: Install the downloaded .deb package
+      apt:
+        deb: "/tmp/plexmediaserver.deb"
+        state: present
+
+    - name: Clean up the .deb package
+      file:
+        path: "/tmp/plexmediaserver.deb"
+        state: absent
