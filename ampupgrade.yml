@@ -1,9 +1,33 @@
 ---
-- hosts: all
+- name: Update AMP by CubeCoders to the latest version
+  hosts: AMP
   become: yes
-  become_user: amp
-  become_method: sudo
 
   tasks:
-  - name: Upgrade amp instance...
-    command: ampinstmgr upgradeall
+    - name: Ensure AMP is installed
+      apt:
+        name: ampinstmgr
+        state: present
+
+    - name: Stop AMP service
+      service:
+        name: ampinstmgr
+        state: stopped
+
+    - name: Update AMP to the latest version
+      shell: ampinstmgr upgradeall
+      args:
+        creates: /usr/local/bin/ampinstmgr
+
+    - name: Start AMP service
+      service:
+        name: ampinstmgr
+        state: started
+
+    - name: Verify AMP version
+      shell: ampinstmgr --version
+      register: amp_version
+
+    - name: Display AMP version
+      debug:
+        msg: "AMP version is {{ amp_version.stdout }}"
