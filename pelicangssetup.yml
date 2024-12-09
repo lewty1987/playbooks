@@ -1,6 +1,6 @@
 ---
 - name: Set up Pelican Game Server Control Panel
-  hosts: all
+  hosts: pelican
   become: yes
 
   vars:
