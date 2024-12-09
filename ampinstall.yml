@@ -1,0 +1,57 @@
+---
+- name: Install AMP by CubeCoders
+  hosts: amp
+  become: yes
+  vars:
+    amp_username: admin
+    amp_password: YourPassword
+    amp_license_key: YourLicenceKey
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install dependencies
+      apt:
+        name: 
+          - curl
+          - gnupg
+        state: present
+
+    - name: Add CubeCoders GPG key
+      apt_key:
+        url: https://repo.cubecoders.com/archive.key
+        state: present
+
+    - name: Add CubeCoders repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://repo.cubecoders.com/ stable main"
+        state: present
+
+    - name: Update apt cache after adding CubeCoders repository
+      apt:
+        update_cache: yes
+
+    - name: Install AMP
+      apt:
+        name: ampinstmgr
+        state: present
+
+    - name: Enable and start AMP service
+      systemd:
+        name: ampinstmgr
+        enabled: yes
+        state: started
+
+    - name: Create AMP instance
+      command: >
+        ampinstmgr CreateInstance ADSInstance MyAMPInstance 0.0.0.0 8080
+        +Core.Login.Username {{ amp_username }}
+        +Core.Login.Password {{ amp_password }}
+        +Core.LicenceKey {{ amp_license_key }}
+      args:
+        creates: /home/amp/.ampdata/instances/MyAMPInstance
+
+    - name: Start AMP instance
+      command: ampinstmgr StartInstance MyAMPInstance
